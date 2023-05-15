@@ -1,26 +1,30 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="myId" version="0.1" 
+<plugin id="cordova.plugin.trapeze" version="0.1" 
     xmlns="http://apache.org/cordova/ns/plugins/1.0" 
     xmlns:android="http://schemas.android.com/apk/res/android">
+<<<<<<< Updated upstream
     <name>TemplatePlugin</name>
     <js-module name="TemplatePlugin" src="www/TemplatePlugin.js">
         <clobbers target="cordova.plugins.TemplatePlugin" />
     </js-module>
+=======
+    <name>Trapeze</name>
+    <hook type="after_plugin_install" src="scripts/fixConfigXml.js" />
+    <hook type="after_plugin_install" src="scripts/trapeze.js" />
+>>>>>>> Stashed changes
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="TemplatePlugin">
-                <param name="android-package" value="myId.TemplatePlugin" />
+            <feature name="Trapeze">
+                <param name="android-package" value="cordova.plugin.trapeze.Trapeze" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml" />
-        <source-file src="src/android/TemplatePlugin.java" target-dir="src/myId/TemplatePlugin" />
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="TemplatePlugin">
-                <param name="ios-package" value="TemplatePlugin" />
+            <feature name="Trapeze">
+                <param name="ios-package" value="Trapeze" />
             </feature>
         </config-file>
-        <source-file src="src/ios/TemplatePlugin.m" />
     </platform>
 </plugin>
