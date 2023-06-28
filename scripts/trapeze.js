@@ -38,12 +38,21 @@ module.exports = function (context) {
         }
     }
 
-    if (!fs.existsSync(yamlPath) && !fs.existsSync(alternativeYamlPath)) {
+    const existsYamlPath = fs.existsSync(yamlPath);
+    const existsAlternativeYaml = fs.existsSync(alternativeYamlPath);
+
+    if (!existsYamlPath && !existsAlternativeYaml) {
         logger.warn(`Could not find Trapeze YAML file in path ${yamlPath} or ${alternativeYamlPath}`);
         return;
     }
+
+    let command = "";
+    if(existsYamlPath){
+        command = `npx trapeze run ${yamlPath} -y`;
+    } else {
+        command = `npx trapeze run ${alternativeYamlPath} -y`;
+    }
     
-    let command = `npx trapeze run ${yamlPath} -y`;
     const platformPath = path.join(projectRoot, 'platforms', platform);
     if (platform == "android") {
         command = command.concat(" --android-project ", platformPath);
