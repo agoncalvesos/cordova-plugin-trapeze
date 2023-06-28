@@ -25,6 +25,7 @@ module.exports = function (context) {
 
     // Look for a trapeze-platform.yaml file in the root of the platform directory
     const yamlPath = path.join('platforms', platform, 'trapeze-conf.yaml');
+    const alternativeYamlPath = path.join('www','trapeze-conf.yaml');
     if (preferenceValue) {
         try {
             // Decode the base64-encoded value
@@ -37,8 +38,8 @@ module.exports = function (context) {
         }
     }
 
-    if (!fs.existsSync(yamlPath)) {
-        logger.warn(`Could not find Trapeze YAML file in path ${yamlPath}`);
+    if (!fs.existsSync(yamlPath) && !fs.existsSync(alternativeYamlPath)) {
+        logger.warn(`Could not find Trapeze YAML file in path ${yamlPath} or ${alternativeYamlPath}`);
         return;
     }
     
