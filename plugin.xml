@@ -6,7 +6,7 @@
     <hook type="after_plugin_install" src="scripts/fixConfigXml.js" />
     <hook type="before_build" src="scripts/trapeze.js" />
     <platform name="android">
-        <hook type="before_plugin_install" src="hooks/npmInstall.js"/>
+        <hook type="before_plugin_add" src="hooks/npmInstall.js"/>
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="Trapeze">
                 <param name="android-package" value="cordova.plugin.trapeze.Trapeze" />
