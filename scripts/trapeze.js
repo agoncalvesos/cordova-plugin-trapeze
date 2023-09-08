@@ -49,13 +49,11 @@ module.exports = function (context) {
         return;
     }
 
-    var preferences = "ASSOCIATED_DOMAINS='[\"quack4.pt\",\"sapo1.pt\"]'";
-
     let command = "";
         if(existsYamlPath){
-            command = `${preferences} npx trapeze run ${yamlPath} -y`;
+            command = `${preferenceTrapezeVars} npx trapeze run ${yamlPath} -y`;
         } else {
-            command = `${preferences} npx trapeze run ${alternativeYamlPath} -y`;
+            command = `${preferenceTrapezeVars} npx trapeze run ${alternativeYamlPath} -y`;
         }
         
         const platformPath = path.join(projectRoot, 'platforms', platform);
