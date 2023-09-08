@@ -26,20 +26,4 @@ Features are:
 * :white_check_mark:	[json](https://trapeze.dev/docs/Operations/android#json)
 * :white_check_mark:	[xml](https://trapeze.dev/docs/Operations/android#xml)
 * :question:	[copy](https://trapeze.dev/docs/Operations/android#copy)
-## Replace in File
-
-This plugin has the ability to change any found pattern with a given substitution string in any file(s).
-
-This can be used by using a preference named `ReplaceInFile` in your application that is a Base 64 encoded string, that should follow the following structure:
-```
-    [ 
-        {
-            "files": [ "**/*.xml", "**/*.json"],
-            "from":"/anystringwithorwithoutregex/g",
-            "to":"com.outsystems.rd.twoSignal"
-        }
-    ]
-```
-
-This plugin makes use of an npm library called `replace-in-file` and you can learn more about the possible configurations [here](https://github.com/adamreisnz/replace-in-file#readme).
 
