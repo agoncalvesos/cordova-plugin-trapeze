@@ -7,7 +7,8 @@ const { execSync } = require("child_process");
 const ExtendedConfigParser = require('./utils/extendedConfigParser');
 
 
-const PREFERENCE_NAME_SUFFIX = 'TrapezeConf'
+const PREFERENCE_TRAPEZE_CONF = 'TrapezeConf'
+const PREFERENCE_TRAPEZE_VARS = 'TrapezeVars'
 
 module.exports = function (context) {
     // Get the Cordova project directory
@@ -19,21 +20,23 @@ module.exports = function (context) {
 
     // Get preferences that describe usage descriptions
     const parser = ExtendedConfigParser.createInstance(context);
-    const preferenceValue = parser
-        .getPreference(PREFERENCE_NAME_SUFFIX, platform);
+    const preferenceTrapezeConf = parser
+        .getPreference(PREFERENCE_TRAPEZE_CONF, platform);
+    const preferenceTrapezeVars = parser
+        .getPreference(PREFERENCE_TRAPEZE_VARS, platform);
 
 
     // Look for a trapeze-platform.yaml file in the root of the platform directory
     const yamlPath = path.join('platforms', platform, 'trapeze-conf.yaml');
     const alternativeYamlPath = path.join('www','trapeze-conf.yaml');
-    if (preferenceValue) {
+    if (preferenceTrapezeConf) {
         try {
             // Decode the base64-encoded value
-            const decodedValue = Buffer.from(preferenceValue, 'base64').toString('utf-8');
+            const decodedValue = Buffer.from(preferenceTrapezeConf, 'base64').toString('utf-8');
             yamlContents = decodedValue.trim();
             fs.writeFileSync(yamlPath, yamlContents);
         } catch (e) {
-            logger.error(`Invalid base64-encoded value for preference ${PREFERENCE_NAME_SUFFIX}`,e);
+            logger.error(`Invalid base64-encoded value for preference ${PREFERENCE_TRAPEZE_CONF}`,e);
             return;
         }
     }
@@ -46,25 +49,28 @@ module.exports = function (context) {
         return;
     }
 
+    var preferences = "ASSOCIATED_DOMAINS='[\"quack4.pt\",\"sapo1.pt\"]'";
+
     let command = "";
-    if(existsYamlPath){
-        command = `npx trapeze run ${yamlPath} -y`;
-    } else {
-        command = `npx trapeze run ${alternativeYamlPath} -y`;
-    }
+        if(existsYamlPath){
+            command = `${preferences} npx trapeze run ${yamlPath} -y`;
+        } else {
+            command = `${preferences} npx trapeze run ${alternativeYamlPath} -y`;
+        }
+        
+        const platformPath = path.join(projectRoot, 'platforms', platform);
+        if (platform == "android") {
+            command = command.concat(" --android-project ", platformPath);
+        } else if (platform == "ios") {
+            command =command.concat(" --ios-project ", platformPath);
+        }
+
+        let result = runCommand(command);
+
+        result ?
+            console.log("Result: ", result.toString()) :
+            console.error(" > Failed to perform the operation: ", result);
     
-    const platformPath = path.join(projectRoot, 'platforms', platform);
-    if (platform == "android") {
-        command = command.concat(" --android-project ", platformPath);
-    } else if (platform == "ios") {
-        command =command.concat(" --ios-project ", platformPath);
-    }
-
-    let result = runCommand(command);
-
-    result ?
-        console.log("Result: ", result.toString()) :
-        console.error(" > Failed to perform the operation: ", result);
 
 };
 
@@ -77,3 +83,5 @@ function runCommand(cmd) {
     console.log(`Running the command ${cmd}...`);
     return execSync(cmd);
 }
+
+
