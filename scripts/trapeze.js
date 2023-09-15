@@ -22,9 +22,13 @@ module.exports = function (context) {
     const parser = ExtendedConfigParser.createInstance(context);
     const preferenceTrapezeConf = parser
         .getPreference(PREFERENCE_TRAPEZE_CONF, platform);
-    const preferenceTrapezeVars = parser
-        .getPreference(PREFERENCE_TRAPEZE_VARS, platform);
+    var preferenceTrapezeVars = parser
+        .getPreference(PREFERENCE_TRAPEZE_VARS, platform).replace(/'/g, '"');
 
+    const trapezeVarsObj = JSON.parse(preferenceTrapezeVars);
+    preferenceTrapezeVars = Object.keys(trapezeVarsObj).map(function(k) {
+        return encodeURIComponent(k) + "='" + JSON.stringify(trapezeVarsObj[k]) + "'"
+    }).join(' ');
 
     // Look for a trapeze-platform.yaml file in the root of the platform directory
     const yamlPath = path.join('platforms', platform, 'trapeze-conf.yaml');

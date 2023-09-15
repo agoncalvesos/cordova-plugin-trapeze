@@ -11,6 +11,8 @@ This can be used by:
 1. Using a preference named `TrapezeConf` in your application that is a Base 64 encoded string, with the contents of the yaml configuration file
 2. By having a file named `trapeze-conf.yaml` in the path of your application, for the platform. Example for an android cordova app - if your cordova app is in folder `x`, this file should be in `x/platforms/android/trapeze-conf.yaml`.
 
+Trapeze also supports [Environment Variables](https://trapeze.dev/docs/Operations/getting-started#variables-and-environment-variables). This variables can be passed via a preference named `TrapezeVars`. For example TrapezeVars="{'ASSOCIATED_DOMAINS':['domain1.pt','domain2.pt']}". The ASSOCIATED_DOMAINS will be used inside the trapeze-conf.yaml file.
+
 You can learn more about writting configuration files for trapeze in [here](https://trapeze.dev/docs/Operations/getting-started#writing-configuration-files).
 
 Features are:
